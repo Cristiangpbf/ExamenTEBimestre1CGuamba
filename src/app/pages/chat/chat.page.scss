@@ -1,34 +1,34 @@
-// .message-input {
-//     width: 100%;
-//     border: 1px solid var(--ion-color-medium);
-//     border-radius: 6px;
-//     background: #fff;
-//     resize: none;
-//     margin-top: 0px;
-//     --padding-start: 8px;
-// }
+.message-input {
+    width: 100%;
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 6px;
+    background: rgb(0, 0, 0);
+    resize: none;
+    margin-top: 0px;
+    --padding-start: 8px;
+}
  
-// .message {
-//     padding: 10px !important;
-//     border-radius: 10px !important;
-//     margin-bottom: 4px !important;
-
-//     //Permite enviar mensajes con saltos de linea
-//     white-space: pre-wrap;
-// }
+.message {
+    padding: 10px !important;
+    border-radius: 10px !important;
+    margin-bottom: 4px !important;
+    
+    //Permite enviar mensajes con saltos de linea
+    white-space: pre-wrap;
+}
  
-// .my-message {
-//     background: var(--ion-color-tertiary);
-//     color: #fff;
-// }
+.my-message {
+    background: var(--ion-color-tertiary);
+    color: #dfdfdf;
+}
  
-// .other-message {
-//     background: var(--ion-color-secondary);
-//     color: #fff;
-// }
+.other-message {
+    background: var(--ion-color-secondary);
+    color: #fff;
+}
  
-// .time {
-//     color: #dfdfdf;
-//     float: right;
-//     font-size: small;
-// }
+.time {
+    color: #dfdfdf;
+    float: right;
+    font-size: small;
+}

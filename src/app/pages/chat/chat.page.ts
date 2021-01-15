@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { ChatService, Message } from 'src/app/services/chat.service';
 import {Observable} from 'rxjs'
+import {Camera} from '@ionic-native/camera/ngx'
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +16,9 @@ export class ChatPage implements OnInit {
   messages: Observable<Message[]>;
   newMsg = '';
 
-  constructor(private chatService: ChatService, private router: Router) { }
+  imgURL;
+
+  constructor(private chatService: ChatService, private router: Router, private camera: Camera) { }
 
   ngOnInit() {
     this.messages =  this.chatService.getChatMessages();
@@ -33,5 +36,9 @@ export class ChatPage implements OnInit {
       this.router.navigateByUrl('/', {replaceUrl: true});
     })
   }
+
+  // chooseFile(event){
+  //   this.selectedFile = event.target.file
+  // }
 
 }
