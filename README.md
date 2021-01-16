@@ -3,106 +3,107 @@
 
 La aplicacion permite al usuario registrarse, iniciar sesion, y enviar mensajes. Los mensajes son encriptados al enciarse a la base de datos, y se desencriptan al momento de ser mostrados en el vista del chat.
 
+### Link de video TouTube
+
+https://youtu.be/eWQaAcTOSw8
+
+## Comenzando 
+
+Para obtener el código fuente de este proyecto, simplemente diríjase a **Code** -> **Download ZIP**,
+descargue el comprimido del mismo, o clone el proyecto mediante Git.
 
 
-## Comenzando 🚀
+### Pre-requisitos 
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
-
-Mira **Deployment** para conocer como desplegar el proyecto.
-
-
-### Pre-requisitos 📋
-
-_Que cosas necesitas para instalar el software y como instalarlas_
+_¿Que necesita el proyecto?_
 
 ```
-Da un ejemplo
+Ionic CLI                     : 5.4.16 
+Ionic Framework               : @ionic/angular 5.5.1
+@angular-devkit/build-angular : 0.1000.8
+@angular-devkit/schematics    : 10.0.8
+@angular/cli                  : 10.0.8
+@ionic/angular-toolkit        : 2.3.3
+```
+```
+NodeJS 		: v14.15.1 
+npm    		: 6.14.9
 ```
 
 ### Instalación 🔧
 
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
-
-_Dí cómo será ese paso_
-
-```
-Da un ejemplo
-```
-
-_Y repite_
+_Para poder poner en marcha el proyecto, utilizar el comando npm install en la raíz_
+_Comando npm en la raíz del proyecto_
 
 ```
-hasta finalizar
+\ExamenTEBimestre1CGuamba>npm install
 ```
 
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
-
-## Ejecutando las pruebas ⚙️
-
-_Explica como ejecutar las pruebas automatizadas para este sistema_
-
-### Analice las pruebas end-to-end 🔩
-
-_Explica que verifican estas pruebas y por qué_
+Y luego, ejecutar el servidor de pruebas con Ionic
 
 ```
-Da un ejemplo
+\Chat-App-Ionic-master>ionic serve -l
 ```
+_La opción -l va a instalar Ionic-Lab, por lo que se deberá confirmar la instalación del mismo_
 
-### Y las pruebas de estilo de codificación ⌨️
+## Explicacion del código 
 
-_Explica que verifican estas pruebas y por qué_
+Es una aplicación de chat que permite enviar mensajes, destaca los mensajes enviados por el usuario autenticado y, por ende, usamos también un log-in que permite a los usuarios autenticarse.
 
-```
-Da un ejemplo
-```
+Para el almacenamiento y la autenticación de usuarios usamos la plataforma Firebase.
 
-## Despliegue 📦
+Además, los mensajes son encriptados, por lo que no serán legibles fuera de la aplicación, por ejemplo, en la Real time Data base.
 
-_Agrega notas adicionales sobre como hacer deploy_
+Ahora les voy a explicar un poco del código.
 
-## Construido con 🛠️
+* Primero, en la estructura tenemos dentro de la carpeta /app los directorios pages y services, dentro de pages tenemos el módulo chat y el módulo login. 
 
-_Menciona las herramientas que utilizaste para crear tu proyecto_
+* En el archivo _app-routing.module_, se modificó el enrutamiento de la siguiente manera, indicando primero que la ruta raíz será la de inicio de sesión y registro. ya es a donde vamos a redirigir al usuario en caso de que no esté autenticado.  si el usuario está autenticado, este va a poder ingresar directamente al módulo del chat.  Y esta es la ruta que se va a usar en ese caso.
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
+* El siguiente archivo importante es _app.module_, en donde incluimos las dependencias que vamos a usar y que ya fueron previamente instaladas. Aquí podemos ver las librerías de Firebase para la comunicación con la base de datos
 
-## Contribuyendo 🖇️
+### SERVICIO 
 
-Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
+en el servicio _chat.service.ts_ se implementan los metodos que van a consumir los dos módulos. Aquí declaramos las variables que van a ser usadas y las interfaces. 
+Mediante el método _signUp_, enviamos el email y contraseña a Firebase, añadiendo al nuevo usuario a la colección users en la base de datos.
 
-## Wiki 📖
+En el método _signIn_ se establece el inicio de sesión, obteniendo un usuario autenticado.
 
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/tu/proyecto/wiki)
+Mediante el método _signOut_ cerramos la sesión del usuario autenticado
 
-## Versionado 📌
 
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/tu/proyecto/tags).
+mediante el método _addChatMessaage_, crea un mensaje en la base de datos, relacionándolo con el usuario autenticado que envió el mensaje.
+
+Mediante el método _getChatMessages_, Sa mapean todos los usuarios, y sus respectivos mensajes, en este método es donde se aplica la desencriptación de los mensajes desde la base de datos. También se ordenan los mensajes por fecha.
+
+Finalmente tenemos los métodos _getUsers_ y _getUserForMsg_, el primero simplemente trae todo los usuarios, y el segundo identifica al usuario que envió cada mensaje.
+
+
+### MODULO LOGIN
+
+* En el documento typescript _login.page.ts_ del módulo login, se encuentran los métodos utilizados para el registro, e inicio de sesión. Además, se implementan un par de métodos extra, para poder acceder fácilmente al email y contraseña del formulario que se usa en el archivo HTML de la vista. también se incluyen los validadores de los campos email y contraseña.
+
+* En el archivo HTML tenemos el formulario para el envío del correo y contraseña del usuario, y los botones que llaman a los métodos de inicio de sesión y registro. En los inputs del formulario se agregaron etiquetas que usan los validadores mostrados anteriormente Tanto para el correo como para la contraseña. 
+
+### Módulo de chat
+
+* En el módulo de chat, se establece la lógica de encriptación de mensajes. 
+
+En el método _sendMessage_ se envían los mensajes y se los encripta, en la parte de arriba está el mismo método comentado, pero sin el envío de mensajes encriptados.
+
+Tenemos el método para poder cerrar sesión _signOut_, que nos permite cerrar la sesión y nos envía al directorio raíz, es decir la pantalla de login.
+
+
+Y finalmente en el archivo HTML con un grid que carga los mensajes con la cuenta de la persona que envía el mensaje, el mensaje en sí, y la hora y fecha de envío.                   
+  
+Y abajo tenemos el input para escribir el mensaje y el botón de envío.
+
+## Despliegue 
+
+_Para crear un .apk del proyecto, debe ejecutar el comando **ionic build**. Al finalizar, se le va a indicar la ubicacion del archivo apk para probarlo en un dispositivo android o en un emulador_
 
 ## Autores ✒️
 
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-* **Andrés Villanueva** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Fulanito Detal** - *Documentación* - [fulanitodetal](#fulanito-de-tal)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
-
-## Expresiones de Gratitud 🎁
-
-* Comenta a otros sobre este proyecto 📢
-* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
-* Da las gracias públicamente 🤓.
-* etc.
+* **Cristian Guamba** 
 
 
-
----
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
