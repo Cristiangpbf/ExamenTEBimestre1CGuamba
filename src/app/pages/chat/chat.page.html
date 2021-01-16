@@ -6,8 +6,9 @@
         <ion-icon name="log-out" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-toolbar>  
 </ion-header>
+
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-row *ngFor="let message of messages | async">
@@ -20,7 +21,11 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+
+<!-- Envio de mensajes -->
 <ion-footer>
+
   <ion-toolbar color="light">
 
     <ion-row class="ion-align-items-center">
@@ -38,18 +43,17 @@
     <ion-row class="ion-align-items-right">
 
       <ion-col size="3">        
-        <ion-button  fill="clear" color="primary" class="img-btn" (click)="getCamera()">
+        <ion-button  fill="clear" color="primary" (click)="getCamera()">
           <ion-icon name="camera-outline" slot="icon-only" size="large"></ion-icon>
         </ion-button>
       </ion-col>
 
       <ion-col size="3">        
-        <ion-button  fill="clear" color="primary" class="img-btn" (click)="getGallery()">
+        <ion-button  fill="clear" color="primary" (click)="getGallery()">
           <ion-icon name="image-outline" slot="icon-only" size="large"></ion-icon>
         </ion-button>
       </ion-col>
       
     </ion-row>
-
   </ion-toolbar>
 </ion-footer>

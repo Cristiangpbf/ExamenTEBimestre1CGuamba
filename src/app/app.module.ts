@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import {AngularFireStorageModule} from '@angular/fire/storage'
 import {Camera} from '@ionic-native/camera/ngx'
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { switchMap, map } from 'rxjs/operators';
+import * as CryptoJS from 'crypto-js';
 import { Observable } from 'rxjs';
  
 export interface User {
@@ -25,6 +26,7 @@ export interface Message {
 })
 export class ChatService {
   currentUser: User = null;
+  msgDesEncryp:string;
  
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     this.afAuth.onAuthStateChanged((user) => {
@@ -77,12 +79,17 @@ export class ChatService {
       switchMap(res => {
         users = res;
         console.log('Todos los usuarios', users);
+        //Se ordenan los mensajes por fecha de creacion
         return this.afs.collection('messages', ref => ref.orderBy('createdAt')).valueChanges({idField: 'id'}) as Observable<Message[]>;
       }),
       map(messages => {
         for (let m of messages){
+          //desencriptar
+          this.msgDesEncryp = CryptoJS.AES.decrypt(m.msg, "EstaEsUnaClave").toString(CryptoJS.enc.Utf8);
+          m.msg = this.msgDesEncryp;
+          //
           m.fromName = this.getUserForMsg(m.from, users);
-          m.myMsg = this.currentUser.uid ===m.from;
+          m.myMsg = this.currentUser.uid === m.from;
         }
         console.log('todos los mensajes: ', messages)
 
